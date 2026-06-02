@@ -1,0 +1,441 @@
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  #sl-quiz-wrap {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    color: #1C1925;
+  }
+
+  #sl-quiz-wrap .card {
+    background: #fff;
+    border-radius: 20px;
+    border: 0.5px solid rgba(196,104,122,0.15);
+    padding: 2.75rem 2.5rem;
+    width: 100%;
+    max-width: 560px;
+  }
+  #sl-quiz-wrap .card--wide { max-width: 600px; }
+
+  #sl-quiz-wrap .eyebrow {
+    font-size: 10.5px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: #C4687A;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 1.25rem;
+  }
+  #sl-quiz-wrap .eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #C4687A;
+    flex-shrink: 0;
+  }
+
+  #sl-quiz-wrap h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1C1925;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  #sl-quiz-wrap h1.sm { font-size: 1.75rem; margin-bottom: 0.35rem; }
+
+  #sl-quiz-wrap p.body {
+    font-size: 15px;
+    color: #8C7880;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+
+  #sl-quiz-wrap input[type=text],
+  #sl-quiz-wrap input[type=email] {
+    padding: 0.75rem 1rem;
+    font-size: 15px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    border: 1px solid rgba(196,104,122,0.2);
+    border-radius: 10px;
+    color: #1C1925;
+    background: #FDF0F3;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.2s;
+  }
+  #sl-quiz-wrap input[type=text]:focus,
+  #sl-quiz-wrap input[type=email]:focus { border-color: #C4687A; }
+  #sl-quiz-wrap input.error { border-color: #e05555; }
+  #sl-quiz-wrap .field-group { display: flex; flex-direction: column; gap: 0.65rem; }
+  #sl-quiz-wrap .error-msg { font-size: 12px; color: #e05555; }
+
+  #sl-quiz-wrap .btn-primary {
+    display: block; width: 100%;
+    margin-top: 1.25rem;
+    padding: 0.9rem 1.5rem;
+    background: #C4687A;
+    color: #fff; border: none;
+    border-radius: 50px;
+    font-size: 15px; font-weight: 500;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  #sl-quiz-wrap .btn-primary:hover { background: #a84f61; }
+
+  #sl-quiz-wrap .intro-footer {
+    margin-top: 1.75rem;
+    display: flex; gap: 1.5rem; justify-content: center;
+  }
+  #sl-quiz-wrap .intro-meta {
+    font-size: 12px; color: #C4A8B0;
+    display: flex; align-items: center; gap: 5px;
+  }
+  #sl-quiz-wrap .intro-meta-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%; background: #E8B4BC; display: inline-block;
+  }
+
+  #sl-quiz-wrap .progress-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  #sl-quiz-wrap .progress-meta { font-size: 11px; color: #C4A8B0; letter-spacing: 0.06em; }
+  #sl-quiz-wrap .progress-pct { color: #C4687A; }
+  #sl-quiz-wrap .progress-track { height: 2px; background: #FAEAED; border-radius: 2px; margin-bottom: 2.25rem; }
+  #sl-quiz-wrap .progress-fill { height: 100%; background: #C4687A; border-radius: 2px; transition: width 0.35s ease; }
+
+  #sl-quiz-wrap .question-hint { font-size: 13px; color: #C4A8B0; margin-bottom: 0.5rem; }
+  #sl-quiz-wrap .question-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.35rem; font-weight: 400;
+    color: #1C1925; line-height: 1.5; margin-bottom: 2rem;
+  }
+
+  #sl-quiz-wrap .options { display: flex; flex-direction: column; gap: 0.55rem; }
+  #sl-quiz-wrap .option-btn {
+    padding: 0.8rem 1.1rem;
+    background: #FDF0F3;
+    border: 1px solid rgba(196,104,122,0.18);
+    border-radius: 50px; font-size: 14px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    color: #7A6270; cursor: pointer; text-align: left;
+    display: flex; align-items: center; gap: 0.85rem;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  #sl-quiz-wrap .option-btn:hover { background: #FAEAED; border-color: #C4687A; color: #1C1925; }
+  #sl-quiz-wrap .option-btn:hover .option-num { background: #C4687A; color: #fff; }
+  #sl-quiz-wrap .option-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #F5D5DA; display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 11px; color: #C4687A; font-weight: 500;
+    flex-shrink: 0; transition: background 0.15s, color 0.15s;
+  }
+
+  #sl-quiz-wrap .fade { transition: opacity 0.22s ease; }
+  #sl-quiz-wrap .fade.out { opacity: 0; }
+
+  #sl-quiz-wrap .style-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border-radius: 50px; padding: 5px 14px; margin-bottom: 1.5rem;
+  }
+  #sl-quiz-wrap .badge-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  #sl-quiz-wrap .badge-text { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
+  #sl-quiz-wrap .tagline {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic; font-size: 1.1rem; line-height: 1.4; margin-bottom: 1.5rem;
+  }
+  #sl-quiz-wrap .breakdown-section {
+    border-top: 1px solid rgba(196,104,122,0.1);
+    padding-top: 1.5rem; margin-bottom: 1.75rem;
+  }
+  #sl-quiz-wrap .section-label {
+    font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #C4687A; font-weight: 500; display: block; margin-bottom: 1.1rem;
+  }
+  #sl-quiz-wrap .breakdown-row { margin-bottom: 1rem; }
+  #sl-quiz-wrap .breakdown-meta { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  #sl-quiz-wrap .breakdown-name { font-size: 13px; color: #1C1925; }
+  #sl-quiz-wrap .breakdown-pct { font-size: 13px; font-weight: 500; }
+  #sl-quiz-wrap .bar-track { height: 4px; background: #FAE8EC; border-radius: 2px; overflow: hidden; }
+  #sl-quiz-wrap .bar-fill { height: 100%; border-radius: 2px; width: 0%; transition: width 1s ease; }
+  #sl-quiz-wrap .cta-box { border-radius: 14px; padding: 1.5rem 1.75rem; }
+  #sl-quiz-wrap .cta-text { font-size: 14.5px; color: #1C1925; line-height: 1.7; margin-bottom: 1.1rem; }
+  #sl-quiz-wrap .btn-cta {
+    padding: 0.75rem 1.5rem; color: #fff; border: none;
+    border-radius: 50px; font-size: 14px; font-weight: 500;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    cursor: pointer; text-decoration: none;
+    display: inline-block; transition: opacity 0.2s;
+  }
+  #sl-quiz-wrap .btn-cta:hover { opacity: 0.88; }
+  #sl-quiz-wrap .footer-note { font-size: 12px; color: #D4B8BE; text-align: center; margin-top: 1.5rem; line-height: 1.6; }
+  #sl-quiz-wrap .footer-email { color: #C4A8B0; }
+
+  #sl-quiz-wrap .phase { display: none; }
+  #sl-quiz-wrap .phase.active { display: block; }
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+<div id="sl-quiz-wrap">
+
+  <!-- INTRO -->
+  <div class="card phase active" id="sl-phase-intro">
+    <div class="eyebrow"><span class="eyebrow-dot"></span>Securely Loved</div>
+    <h1>What's your attachment style?</h1>
+    <p class="body">Your attachment style shapes how you love, how you fight, and how you heal. This 16-question assessment takes about 3 minutes and gives you a clear picture of your relational blueprint. No generalities. Real insight.</p>
+    <div class="field-group">
+      <input type="text" id="sl-input-name" placeholder="First name" autocomplete="given-name">
+      <input type="email" id="sl-input-email" placeholder="Email address" autocomplete="email">
+      <span class="error-msg" id="sl-email-error" style="display:none">Please enter a valid email address.</span>
+    </div>
+    <button class="btn-primary" id="sl-btn-start">Discover my attachment style</button>
+    <div class="intro-footer">
+      <span class="intro-meta"><span class="intro-meta-dot"></span>3 minutes</span>
+      <span class="intro-meta"><span class="intro-meta-dot"></span>16 questions</span>
+      <span class="intro-meta"><span class="intro-meta-dot"></span>Free</span>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="card phase" id="sl-phase-quiz">
+    <div class="eyebrow"><span class="eyebrow-dot"></span>Securely Loved</div>
+    <div>
+      <div class="progress-header">
+        <span class="progress-meta" id="sl-q-counter">Question 1 of 16</span>
+        <span class="progress-meta progress-pct" id="sl-q-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="sl-progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="fade" id="sl-question-wrap">
+      <p class="question-hint">How true is this for you?</p>
+      <p class="question-text" id="sl-question-text"></p>
+      <div class="options" id="sl-options-list"></div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="card card--wide phase" id="sl-phase-results">
+    <div class="style-badge" id="sl-result-badge">
+      <span class="badge-dot" id="sl-badge-dot"></span>
+      <span class="badge-text" id="sl-badge-label"></span>
+    </div>
+    <h1 class="sm" id="sl-result-heading"></h1>
+    <p class="tagline" id="sl-result-tagline"></p>
+    <p class="body" id="sl-result-description"></p>
+    <div class="breakdown-section">
+      <span class="section-label">Your full breakdown</span>
+      <div id="sl-breakdown-bars"></div>
+    </div>
+    <div class="cta-box" id="sl-cta-box">
+      <p class="cta-text" id="sl-cta-text"></p>
+      <a class="btn-cta" id="sl-cta-btn" href="https://securelyloved.com/book-now" target="_blank">Book a Free Connection Call</a>
+    </div>
+    <p class="footer-note">A personalized note from Bev is on its way to <span class="footer-email" id="sl-footer-email"></span>.</p>
+  </div>
+
+</div>
+
+<script>
+(function() {
+
+  var WEBHOOK  = 'https://services.leadconnectorhq.com/hooks/KJfsBuPk1gmlgjYHEf7p/webhook-trigger/23b6f985-1eb5-4dc0-8ae0-78ba69abf71f';
+  var BOOK_URL = 'https://securelyloved.com/book-now';
+
+  var QUESTIONS = [
+    { text: "I worry that the people I love might eventually leave me.", axis: "anxiety" },
+    { text: "I prefer to work through difficult emotions on my own rather than lean on others.", axis: "avoidance" },
+    { text: "When someone I care about doesn't respond quickly, I tend to imagine the worst.", axis: "anxiety" },
+    { text: "When a relationship starts getting emotionally intense, I feel the urge to back off.", axis: "avoidance" },
+    { text: "I need reassurance from people close to me to feel settled in the relationship.", axis: "anxiety" },
+    { text: "I feel uncomfortable when people try to get too close, even if I genuinely care about them.", axis: "avoidance" },
+    { text: "My close relationships occupy my thoughts even when I'm trying to focus on other things.", axis: "anxiety" },
+    { text: "Fully depending on another person feels risky to me.", axis: "avoidance" },
+    { text: "When I sense a loved one pulling away, I feel a wave of anxiety.", axis: "anxiety" },
+    { text: "Talking openly about my feelings or fears doesn't come naturally to me.", axis: "avoidance" },
+    { text: "I often want more closeness than the people around me seem comfortable giving.", axis: "anxiety" },
+    { text: "Deep intimacy can feel overwhelming, even when I want it.", axis: "avoidance" },
+    { text: "It's hard to feel settled in a relationship unless I know exactly where I stand.", axis: "anxiety" },
+    { text: "When a relationship starts feeling too close too fast, I instinctively create space.", axis: "avoidance" },
+    { text: "When I'm hurting, I really need someone close to comfort me.", axis: "anxiety" },
+    { text: "I tend to trust my own judgment more than other people's ability to truly support me.", axis: "avoidance" },
+  ];
+
+  var OPTIONS = ["Never", "Rarely", "Sometimes", "Often", "Always"];
+
+  var STYLES = {
+    secure:    { label:"Securely Attached",     tagline:"You feel at home in close relationships.",  color:"#9B6EA8", bg:"#F3EAF7", description:"Secure attachment means you generally feel comfortable with both intimacy and independence. You trust that people care about you and can be counted on. Relationships feel more nourishing than threatening, and conflict doesn't destabilize your sense of self. This is a foundation worth understanding and protecting.", cta:"Explore how to deepen your secure foundation and build even more fulfilling relationships." },
+    anxious:   { label:"Anxiously Attached",    tagline:"You love deeply, and it costs you.",        color:"#C4687A", bg:"#FAEAED", description:"Anxious attachment means your nervous system is tuned to detect any sign of distance in the people you love. You're not needy. You're wired for threat detection. The fear of abandonment runs beneath many of your relational patterns, and reassurance only settles it temporarily. This is healable, and you don't have to keep white-knuckling it alone.", cta:"Learn how to build security from within, so you stop needing it handed to you." },
+    dismissive:{ label:"Dismissively Avoidant", tagline:"Independence is your armor.",               color:"#7A8CC4", bg:"#EAECF7", description:"Dismissive avoidant attachment means you've learned to manage on your own, and you're good at it. Closeness can feel threatening or overwhelming, so you keep people at a comfortable distance. Not because you don't care, but because depending on others has never felt entirely safe. You can learn to let people in without losing yourself in the process.", cta:"Discover how real intimacy is possible without the loss of self you've been protecting against." },
+    fearful:   { label:"Fearful Avoidant",      tagline:"You want closeness. You also fear it.",     color:"#7B5E7A", bg:"#F0EAF0", description:"Fearful avoidant attachment means you're caught between wanting deep connection and being terrified of it. You may push people away and then grieve the distance. Relationships can feel confusing, even when you genuinely love the person. This is one of the more complex attachment patterns, and it is absolutely workable.", cta:"Understand the push-pull pattern and begin untangling it with the right support." },
+  };
+
+  var userName  = '';
+  var userEmail = '';
+  var answers   = [];
+  var qIndex    = 0;
+  var transitioning = false;
+
+  // ── INTRO ─────────────────────────────────────────────────
+  document.getElementById('sl-btn-start').addEventListener('click', startQuiz);
+  document.getElementById('sl-input-email').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') startQuiz();
+  });
+
+  function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  function startQuiz() {
+    var name  = document.getElementById('sl-input-name').value.trim();
+    var email = document.getElementById('sl-input-email').value.trim();
+    var errEl = document.getElementById('sl-email-error');
+    var emailInput = document.getElementById('sl-input-email');
+    if (!isValidEmail(email)) {
+      emailInput.classList.add('error');
+      errEl.style.display = 'block';
+      return;
+    }
+    emailInput.classList.remove('error');
+    errEl.style.display = 'none';
+    userName  = name;
+    userEmail = email;
+    showPhase('quiz');
+    renderQuestion(0);
+  }
+
+  // ── PHASES ─────────────────────────────────────────────────
+  function showPhase(id) {
+    document.querySelectorAll('#sl-quiz-wrap .phase').forEach(function(el) { el.classList.remove('active'); });
+    document.getElementById('sl-phase-'+id).classList.add('active');
+  }
+
+  // ── QUIZ ───────────────────────────────────────────────────
+  function renderQuestion(idx) {
+    var q   = QUESTIONS[idx];
+    var pct = Math.round((idx / QUESTIONS.length) * 100);
+    document.getElementById('sl-q-counter').textContent = 'Question '+(idx+1)+' of '+QUESTIONS.length;
+    document.getElementById('sl-q-pct').textContent = pct+'%';
+    document.getElementById('sl-progress-fill').style.width = pct+'%';
+    document.getElementById('sl-question-text').textContent = q.text;
+    var list = document.getElementById('sl-options-list');
+    list.innerHTML = '';
+    OPTIONS.forEach(function(opt, i) {
+      var btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerHTML = '<span class="option-num">'+(i+1)+'</span>'+opt;
+      btn.addEventListener('click', function() { handleAnswer(i+1); });
+      list.appendChild(btn);
+    });
+  }
+
+  function handleAnswer(value) {
+    if (transitioning) return;
+    transitioning = true;
+    var wrap = document.getElementById('sl-question-wrap');
+    wrap.classList.add('out');
+    setTimeout(function() {
+      answers.push(value);
+      var next = qIndex + 1;
+      if (next < QUESTIONS.length) {
+        qIndex = next;
+        renderQuestion(next);
+        wrap.classList.remove('out');
+        transitioning = false;
+      } else {
+        var results = computeResults(answers);
+        fireWebhook(results);
+        renderResults(results);
+        showPhase('results');
+        transitioning = false;
+        setTimeout(function() {
+          document.querySelectorAll('#sl-quiz-wrap .bar-fill').forEach(function(bar) {
+            bar.style.width = bar.getAttribute('data-pct')+'%';
+          });
+        }, 150);
+        setTimeout(function() { window.location.href = BOOK_URL; }, 12000);
+      }
+    }, 220);
+  }
+
+  // ── SCORING ────────────────────────────────────────────────
+  function computeResults(ans) {
+    var anxSum=0, avoidSum=0, anxCount=0, avoidCount=0;
+    QUESTIONS.forEach(function(q,i) {
+      if (q.axis==='anxiety') { anxSum+=ans[i]; anxCount++; }
+      else { avoidSum+=ans[i]; avoidCount++; }
+    });
+    var anxScore  = anxSum  / anxCount;
+    var avoidScore = avoidSum / avoidCount;
+    var a = (anxScore-1)/4;
+    var v = (avoidScore-1)/4;
+    var raw = { secure:(1-a)*(1-v), anxious:a*(1-v), dismissive:(1-a)*v, fearful:a*v };
+    var total = Object.values(raw).reduce(function(x,y){return x+y;},0);
+    var breakdown = {};
+    Object.keys(raw).forEach(function(k){ breakdown[k]=Math.round((raw[k]/total)*100); });
+    var primary;
+    if (anxScore>=3 && avoidScore>=3) primary='fearful';
+    else if (anxScore>=3) primary='anxious';
+    else if (avoidScore>=3) primary='dismissive';
+    else primary='secure';
+    return { primary:primary, breakdown:breakdown, anxScore:anxScore, avoidScore:avoidScore };
+  }
+
+  // ── RESULTS ────────────────────────────────────────────────
+  function renderResults(results) {
+    var style = STYLES[results.primary];
+    document.getElementById('sl-result-badge').style.background = style.bg;
+    document.getElementById('sl-badge-dot').style.background = style.color;
+    document.getElementById('sl-badge-label').style.color = style.color;
+    document.getElementById('sl-badge-label').textContent = style.label;
+    var firstName = userName ? userName+', you' : 'You';
+    document.getElementById('sl-result-heading').textContent = firstName+"'re "+style.label.toLowerCase()+'.';
+    document.getElementById('sl-result-tagline').textContent = style.tagline;
+    document.getElementById('sl-result-tagline').style.color = style.color;
+    document.getElementById('sl-result-description').textContent = style.description;
+    var sorted = Object.entries(results.breakdown).sort(function(a,b){return b[1]-a[1];});
+    var barsEl = document.getElementById('sl-breakdown-bars');
+    barsEl.innerHTML = '';
+    sorted.forEach(function(entry) {
+      var key=entry[0], pct=entry[1], sd=STYLES[key];
+      var row = document.createElement('div');
+      row.className = 'breakdown-row';
+      row.innerHTML = '<div class="breakdown-meta"><span class="breakdown-name">'+sd.label+'</span><span class="breakdown-pct" style="color:'+sd.color+'">'+pct+'%</span></div><div class="bar-track"><div class="bar-fill" style="background:'+sd.color+'" data-pct="'+pct+'"></div></div>';
+      barsEl.appendChild(row);
+    });
+    document.getElementById('sl-cta-box').style.background = style.bg;
+    document.getElementById('sl-cta-text').textContent = style.cta;
+    document.getElementById('sl-cta-btn').style.background = style.color;
+    document.getElementById('sl-footer-email').textContent = userEmail;
+  }
+
+  // ── WEBHOOK ────────────────────────────────────────────────
+  function fireWebhook(results) {
+    fetch(WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        first_name:           userName,
+        email:                userEmail,
+        attachment_style:     STYLES[results.primary].label,
+        attachment_style_key: results.primary,
+        anxiety_score:        parseFloat(results.anxScore.toFixed(2)),
+        avoidance_score:      parseFloat(results.avoidScore.toFixed(2)),
+        secure_:              results.breakdown.secure,
+        anxious_:             results.breakdown.anxious,
+        dismissive_:          results.breakdown.dismissive,
+        fearful_:             results.breakdown.fearful,
+      }),
+    }).catch(function(){});
+  }
+
+  renderQuestion(0);
+
+})();
+</script>
