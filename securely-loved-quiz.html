@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's Your Attachment Style? | Securely Loved</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  /* ─── RESET & BASE ─────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: #FAF8F4;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    color: #2C2520;
+  }
+
+  /* ─── CARD ─────────────────────────────────────────────── */
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    border: 0.5px solid rgba(78,99,85,0.15);
+    padding: 2.75rem 2.5rem;
+    width: 100%;
+    max-width: 560px;
+  }
+  .card--wide { max-width: 600px; }
+
+  /* ─── TYPOGRAPHY ───────────────────────────────────────── */
+  .eyebrow {
+    font-size: 10.5px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: #4E6355;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 1.25rem;
+  }
+  .eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4E6355;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2C2520;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .h1--sm { font-size: 1.75rem; margin-bottom: 0.35rem; }
+
+  .tagline {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+  }
+
+  p.body {
+    font-size: 15px;
+    color: #7A6E68;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+
+  .label {
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #4E6355;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 1.1rem;
+  }
+
+  /* ─── FORM ─────────────────────────────────────────────── */
+  .field-group { display: flex; flex-direction: column; gap: 0.65rem; }
+
+  input[type=text], input[type=email] {
+    padding: 0.75rem 1rem;
+    font-size: 15px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    border: 1px solid rgba(78,99,85,0.2);
+    border-radius: 10px;
+    color: #2C2520;
+    background: #FAF8F4;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.2s;
+  }
+  input[type=text]:focus, input[type=email]:focus {
+    border-color: #4E6355;
+  }
+  input.error { border-color: #B87565; }
+
+  .error-msg {
+    font-size: 12px;
+    color: #B87565;
+    margin-top: -0.3rem;
+  }
+
+  /* ─── BUTTONS ──────────────────────────────────────────── */
+  .btn-primary {
+    display: block;
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 0.9rem 1.5rem;
+    background: #4E6355;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover { background: #3d5044; }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled { background: #C2CEC5; cursor: default; }
+
+  .btn-cta {
+    padding: 0.75rem 1.5rem;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-cta:hover { opacity: 0.88; }
+
+  /* ─── PROGRESS ─────────────────────────────────────────── */
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .progress-meta {
+    font-size: 11px;
+    color: #A9A09A;
+    letter-spacing: 0.06em;
+  }
+  .progress-pct { color: #4E6355; }
+
+  .progress-track {
+    height: 2px;
+    background: #EAF0EC;
+    border-radius: 2px;
+    margin-bottom: 2.25rem;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #4E6355;
+    border-radius: 2px;
+    transition: width 0.35s ease;
+  }
+
+  /* ─── QUIZ QUESTION ────────────────────────────────────── */
+  .question-hint {
+    font-size: 13px;
+    color: #B0A8A2;
+    margin-bottom: 0.5rem;
+  }
+  .question-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: #2C2520;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 0.55rem; }
+
+  .option-btn {
+    padding: 0.8rem 1.1rem;
+    background: #FAF8F4;
+    border: 1px solid rgba(78,99,85,0.18);
+    border-radius: 50px;
+    font-size: 14px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    color: #5A5250;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .option-btn:hover {
+    background: #EAF0EC;
+    border-color: #4E6355;
+    color: #2C2520;
+  }
+  .option-btn:hover .option-num {
+    background: #4E6355;
+    color: #fff;
+  }
+
+  .option-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #E4EBE6;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #4E6355;
+    font-weight: 500;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  /* fade transition */
+  .fade { transition: opacity 0.22s ease; }
+  .fade.out { opacity: 0; }
+
+  /* ─── RESULTS ──────────────────────────────────────────── */
+  .style-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 50px;
+    padding: 5px 14px;
+    margin-bottom: 1.5rem;
+  }
+  .badge-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .badge-text {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .breakdown-section {
+    border-top: 1px solid rgba(78,99,85,0.1);
+    padding-top: 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .breakdown-row { margin-bottom: 1rem; }
+  .breakdown-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  .breakdown-name { font-size: 13px; color: #2C2520; }
+  .breakdown-pct { font-size: 13px; font-weight: 500; }
+
+  .bar-track {
+    height: 4px;
+    background: #F0EDE8;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    width: 0%;
+    transition: width 1s ease;
+  }
+
+  .cta-box {
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem;
+  }
+  .cta-text {
+    font-size: 14.5px;
+    color: #2C2520;
+    line-height: 1.7;
+    margin-bottom: 1.1rem;
+  }
+
+  .footer-note {
+    font-size: 12px;
+    color: #C0B8B0;
+    text-align: center;
+    margin-top: 1.5rem;
+    line-height: 1.6;
+  }
+  .footer-email { color: #A9A09A; }
+
+  /* ─── INTRO FOOTER ─────────────────────────────────────── */
+  .intro-footer {
+    margin-top: 1.75rem;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+  .intro-meta {
+    font-size: 12px;
+    color: #A9A09A;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .intro-meta-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #C2CEC5;
+    display: inline-block;
+  }
+
+  /* ─── PHASES ───────────────────────────────────────────── */
+  .phase { display: none; }
+  .phase.active { display: flex; align-items: center; justify-content: center; width: 100%; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     PHASE: INTRO
+══════════════════════════════════════════════════════════ -->
+<div class="phase active" id="phase-intro">
+  <div class="card">
+    <div class="eyebrow">
+      <span class="eyebrow-dot"></span>
+      Securely Loved
+    </div>
+    <h1>What's your attachment style?</h1>
+    <p class="body">
+      Your attachment style shapes how you love, how you fight, and how you heal.
+      This 16-question assessment takes about 3 minutes and gives you a clear picture
+      of your relational blueprint. No generalities. Real insight.
+    </p>
+
+    <div class="field-group">
+      <input type="text" id="input-name" placeholder="First name" autocomplete="given-name">
+      <input type="email" id="input-email" placeholder="Email address" autocomplete="email">
+      <span class="error-msg" id="email-error" style="display:none">Please enter a valid email address.</span>
+    </div>
+
+    <button class="btn-primary" id="btn-start">Discover my attachment style</button>
+
+    <div class="intro-footer">
+      <span class="intro-meta"><span class="intro-meta-dot"></span>3 minutes</span>
+      <span class="intro-meta"><span class="intro-meta-dot"></span>16 questions</span>
+      <span class="intro-meta"><span class="intro-meta-dot"></span>Free</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PHASE: QUIZ
+══════════════════════════════════════════════════════════ -->
+<div class="phase" id="phase-quiz">
+  <div class="card">
+    <!-- Progress -->
+    <div>
+      <div class="progress-header">
+        <span class="progress-meta" id="q-counter">Question 1 of 16</span>
+        <span class="progress-meta progress-pct" id="q-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Question content (fades on transition) -->
+    <div class="fade" id="question-wrap">
+      <p class="question-hint">How true is this for you?</p>
+      <p class="question-text" id="question-text"></p>
+      <div class="options" id="options-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PHASE: RESULTS
+══════════════════════════════════════════════════════════ -->
+<div class="phase" id="phase-results">
+  <div class="card card--wide">
+    <div class="style-badge" id="result-badge">
+      <span class="badge-dot" id="badge-dot"></span>
+      <span class="badge-text" id="badge-label"></span>
+    </div>
+
+    <h1 class="h1--sm" id="result-heading"></h1>
+    <p class="tagline" id="result-tagline"></p>
+    <p class="body" id="result-description"></p>
+
+    <!-- Breakdown -->
+    <div class="breakdown-section">
+      <span class="label">Your full breakdown</span>
+      <div id="breakdown-bars"></div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box" id="cta-box">
+      <p class="cta-text" id="cta-text"></p>
+      <a class="btn-cta" id="cta-btn" href="#" target="_blank">Work with Bev</a>
+    </div>
+
+    <p class="footer-note">
+      A personalized note from Bev is on its way to <span class="footer-email" id="footer-email"></span>.
+    </p>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CONFIG — swap these values before publishing
+// ═══════════════════════════════════════════════════════════════
+const CONFIG = {
+  webhookUrl: 'YOUR_GHL_INBOUND_WEBHOOK_URL',
+  bevSiteUrl: 'https://www.securelyloved.com',
+};
+
+// ═══════════════════════════════════════════════════════════════
+// QUESTIONS
+// axis: "anxiety"  = fear of abandonment / need for closeness
+// axis: "avoidance" = discomfort with intimacy / self-reliance
+// Interleaved so respondents don't detect a pattern.
+// ═══════════════════════════════════════════════════════════════
+const QUESTIONS = [
+  { text: "I worry that the people I love might eventually leave me.", axis: "anxiety" },
+  { text: "I prefer to work through difficult emotions on my own rather than lean on others.", axis: "avoidance" },
+  { text: "When someone I care about doesn't respond quickly, I tend to imagine the worst.", axis: "anxiety" },
+  { text: "When a relationship starts getting emotionally intense, I feel the urge to back off.", axis: "avoidance" },
+  { text: "I need reassurance from people close to me to feel settled in the relationship.", axis: "anxiety" },
+  { text: "I feel uncomfortable when people try to get too close, even if I genuinely care about them.", axis: "avoidance" },
+  { text: "My close relationships occupy my thoughts even when I'm trying to focus on other things.", axis: "anxiety" },
+  { text: "Fully depending on another person feels risky to me.", axis: "avoidance" },
+  { text: "When I sense a loved one pulling away, I feel a wave of anxiety.", axis: "anxiety" },
+  { text: "Talking openly about my feelings or fears doesn't come naturally to me.", axis: "avoidance" },
+  { text: "I often want more closeness than the people around me seem comfortable giving.", axis: "anxiety" },
+  { text: "Deep intimacy can feel overwhelming, even when I want it.", axis: "avoidance" },
+  { text: "It's hard to feel settled in a relationship unless I know exactly where I stand.", axis: "anxiety" },
+  { text: "When a relationship starts feeling too close too fast, I instinctively create space.", axis: "avoidance" },
+  { text: "When I'm hurting, I really need someone close to comfort me.", axis: "anxiety" },
+  { text: "I tend to trust my own judgment more than other people's ability to truly support me.", axis: "avoidance" },
+];
+
+const OPTIONS = ["Never", "Rarely", "Sometimes", "Often", "Always"];
+
+// ═══════════════════════════════════════════════════════════════
+// ATTACHMENT STYLE DEFINITIONS
+// ═══════════════════════════════════════════════════════════════
+const STYLES = {
+  secure: {
+    label: "Securely Attached",
+    tagline: "You feel at home in close relationships.",
+    color: "#4E6355",
+    bg: "#EAF0EC",
+    description: "Secure attachment means you generally feel comfortable with both intimacy and independence. You trust that people care about you and can be counted on. Relationships feel more nourishing than threatening, and conflict doesn't destabilize your sense of self. This is a foundation worth understanding and protecting.",
+    cta: "Explore how to deepen your secure foundation and build even more fulfilling relationships.",
+  },
+  anxious: {
+    label: "Anxiously Attached",
+    tagline: "You love deeply, and it costs you.",
+    color: "#B87565",
+    bg: "#F7EDE9",
+    description: "Anxious attachment means your nervous system is tuned to detect any sign of distance in the people you love. You're not needy. You're wired for threat detection. The fear of abandonment runs beneath many of your relational patterns, and reassurance only settles it temporarily. This is healable, and you don't have to keep white-knuckling it alone.",
+    cta: "Learn how to build security from within, so you stop needing it handed to you.",
+  },
+  dismissive: {
+    label: "Dismissively Avoidant",
+    tagline: "Independence is your armor.",
+    color: "#5E7480",
+    bg: "#E8EFF2",
+    description: "Dismissive avoidant attachment means you've learned to manage on your own, and you're good at it. Closeness can feel threatening or overwhelming, so you keep people at a comfortable distance. Not because you don't care, but because depending on others has never felt entirely safe. You can learn to let people in without losing yourself in the process.",
+    cta: "Discover how real intimacy is possible without the loss of self you've been protecting against.",
+  },
+  fearful: {
+    label: "Fearful Avoidant",
+    tagline: "You want closeness. You also fear it.",
+    color: "#7B5E7A",
+    bg: "#F0EAF0",
+    description: "Fearful avoidant (sometimes called disorganized) attachment means you're caught between wanting deep connection and being terrified of it. You may push people away and then grieve the distance. Relationships can feel confusing, even when you genuinely love the person. This is one of the more complex attachment patterns, and it is absolutely workable.",
+    cta: "Understand the push-pull pattern and begin untangling it with the right support.",
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let state = {
+  name: '',
+  email: '',
+  answers: [],
+  qIndex: 0,
+  transitioning: false,
+};
+
+// ═══════════════════════════════════════════════════════════════
+// SCORING
+// Maps anxiety + avoidance scores onto all 4 quadrants
+// and returns weighted percentages across all styles.
+// ═══════════════════════════════════════════════════════════════
+function computeResults(answers) {
+  let anxSum = 0, avoidSum = 0, anxCount = 0, avoidCount = 0;
+  QUESTIONS.forEach((q, i) => {
+    if (q.axis === 'anxiety') { anxSum += answers[i]; anxCount++; }
+    else { avoidSum += answers[i]; avoidCount++; }
+  });
+
+  const anxScore  = anxSum  / anxCount;
+  const avoidScore = avoidSum / avoidCount;
+
+  // Normalize to 0–1
+  const a = (anxScore  - 1) / 4;
+  const v = (avoidScore - 1) / 4;
+
+  const raw = {
+    secure:    (1 - a) * (1 - v),
+    anxious:   a       * (1 - v),
+    dismissive:(1 - a) * v,
+    fearful:   a       * v,
+  };
+  const total = Object.values(raw).reduce((x, y) => x + y, 0);
+  const breakdown = {};
+  Object.entries(raw).forEach(([k, w]) => {
+    breakdown[k] = Math.round((w / total) * 100);
+  });
+
+  let primary;
+  if      (anxScore >= 3 && avoidScore >= 3) primary = 'fearful';
+  else if (anxScore >= 3)                    primary = 'anxious';
+  else if (avoidScore >= 3)                  primary = 'dismissive';
+  else                                       primary = 'secure';
+
+  return { primary, breakdown, anxScore, avoidScore };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PHASES
+// ═══════════════════════════════════════════════════════════════
+function showPhase(id) {
+  document.querySelectorAll('.phase').forEach(el => el.classList.remove('active'));
+  document.getElementById('phase-' + id).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INTRO → QUIZ
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('btn-start').addEventListener('click', startQuiz);
+document.getElementById('input-email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') startQuiz();
+});
+
+function isValidEmail(v) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
+function startQuiz() {
+  const name  = document.getElementById('input-name').value.trim();
+  const email = document.getElementById('input-email').value.trim();
+  const emailError = document.getElementById('email-error');
+  const emailInput = document.getElementById('input-email');
+
+  if (!isValidEmail(email)) {
+    emailInput.classList.add('error');
+    emailError.style.display = 'block';
+    return;
+  }
+
+  emailInput.classList.remove('error');
+  emailError.style.display = 'none';
+  state.name  = name;
+  state.email = email;
+
+  showPhase('quiz');
+  renderQuestion(0);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════════════════════
+function renderQuestion(index) {
+  const q       = QUESTIONS[index];
+  const total   = QUESTIONS.length;
+  const progress = Math.round((index / total) * 100);
+
+  document.getElementById('q-counter').textContent = `Question ${index + 1} of ${total}`;
+  document.getElementById('q-pct').textContent     = `${progress}%`;
+  document.getElementById('progress-fill').style.width = `${progress}%`;
+  document.getElementById('question-text').textContent = q.text;
+
+  const list = document.getElementById('options-list');
+  list.innerHTML = '';
+
+  OPTIONS.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-num">${i + 1}</span>${opt}`;
+    btn.addEventListener('click', () => handleAnswer(i + 1));
+    list.appendChild(btn);
+  });
+}
+
+function handleAnswer(value) {
+  if (state.transitioning) return;
+  state.transitioning = true;
+
+  const wrap = document.getElementById('question-wrap');
+  wrap.classList.add('out');
+
+  setTimeout(() => {
+    state.answers.push(value);
+    const next = state.qIndex + 1;
+
+    if (next < QUESTIONS.length) {
+      state.qIndex = next;
+      renderQuestion(next);
+      wrap.classList.remove('out');
+      state.transitioning = false;
+    } else {
+      const results = computeResults(state.answers);
+      fireWebhook(results);
+      renderResults(results);
+      showPhase('results');
+      state.transitioning = false;
+
+      // Animate bars in after a brief delay
+      setTimeout(() => {
+        document.querySelectorAll('.bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.pct + '%';
+        });
+      }, 150);
+    }
+  }, 220);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RESULTS
+// ═══════════════════════════════════════════════════════════════
+function renderResults(results) {
+  const style = STYLES[results.primary];
+
+  // Badge
+  const badge = document.getElementById('result-badge');
+  badge.style.background = style.bg;
+  document.getElementById('badge-dot').style.background = style.color;
+  document.getElementById('badge-label').style.color    = style.color;
+  document.getElementById('badge-label').textContent    = style.label;
+
+  // Heading + tagline
+  const firstName = state.name ? state.name + ', you' : 'You';
+  document.getElementById('result-heading').textContent =
+    `${firstName}'re ${style.label.toLowerCase()}.`;
+  document.getElementById('result-tagline').textContent = style.tagline;
+  document.getElementById('result-tagline').style.color = style.color;
+  document.getElementById('result-description').textContent = style.description;
+
+  // Breakdown bars (sorted highest first)
+  const sorted = Object.entries(results.breakdown).sort(([, a], [, b]) => b - a);
+  const barsEl = document.getElementById('breakdown-bars');
+  barsEl.innerHTML = '';
+
+  sorted.forEach(([key, pct]) => {
+    const sd  = STYLES[key];
+    const row = document.createElement('div');
+    row.className = 'breakdown-row';
+    row.innerHTML = `
+      <div class="breakdown-meta">
+        <span class="breakdown-name">${sd.label}</span>
+        <span class="breakdown-pct" style="color:${sd.color}">${pct}%</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" style="background:${sd.color}" data-pct="${pct}"></div>
+      </div>`;
+    barsEl.appendChild(row);
+  });
+
+  // CTA box
+  const ctaBox = document.getElementById('cta-box');
+  ctaBox.style.background = style.bg;
+  document.getElementById('cta-text').textContent = style.cta;
+  const ctaBtn = document.getElementById('cta-btn');
+  ctaBtn.style.background = style.color;
+  ctaBtn.href = CONFIG.bevSiteUrl;
+
+  // Footer
+  document.getElementById('footer-email').textContent = state.email;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GHL WEBHOOK
+// Fires on quiz completion. Paste your GHL Inbound Webhook
+// URL into CONFIG.webhookUrl at the top of this file.
+//
+// GHL Workflow Setup:
+// 1. Automations > New Workflow > Add Trigger: "Inbound Webhook"
+// 2. Copy the generated webhook URL into CONFIG above
+// 3. Add action: "Create or Update Contact" — map:
+//      email              → email
+//      first_name         → First Name
+// 4. Add action: "Update Contact Field" — map each custom field:
+//      attachment_style        → Attachment Style
+//      attachment_style_key    → Attachment Style Key
+//      anxiety_score           → Anxiety Score
+//      avoidance_score         → Avoidance Score
+//      secure_             → Secure %
+//      anxious_            → Anxious %
+//      dismissive_         → Dismissive %
+//      fearful_            → Fearful %
+// 5. Add branch: IF attachment_style_key = anxious → Sequence A
+//                IF attachment_style_key = secure   → Sequence B
+//                etc.
+// ═══════════════════════════════════════════════════════════════
+function fireWebhook(results) {
+  if (!CONFIG.webhookUrl || CONFIG.webhookUrl === 'YOUR_GHL_INBOUND_WEBHOOK_URL') return;
+
+  fetch(CONFIG.webhookUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      first_name:           state.name,
+      email:                state.email,
+      attachment_style:     STYLES[results.primary].label,
+      attachment_style_key: results.primary,
+      anxiety_score:        parseFloat(results.anxScore.toFixed(2)),
+      avoidance_score:      parseFloat(results.avoidScore.toFixed(2)),
+      secure_:              results.breakdown.secure,
+      anxious_:             results.breakdown.anxious,
+      dismissive_:          results.breakdown.dismissive,
+      fearful_:             results.breakdown.fearful,
+    }),
+  }).catch(() => {}); // Silent fail — never blocks the user experience
+}
+</script>
+</body>
+</html>
